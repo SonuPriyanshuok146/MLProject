@@ -49,7 +49,72 @@ class ModelTrainer:
                 "AdaBoost Classifier":AdaBoostRegressor()
             }
             
-            model_report:dict=evaluate_models(x_train=x_train,y_train=y_train,x_test=x_test,y_test=y_test,models=models)
+            params = {
+                "Decision Tree": {
+                    'criterion': ['squared_error','absolute_error','poisson'],
+                    # 'splitter': ['best','random'],
+                    # 'max_features': ['sqrt','log2'],
+                    # 'max_depth': [None, 5, 10, 20],
+                    # 'min_samples_split': [2, 5, 10],
+                    # 'min_samples_leaf': [1, 2, 5],
+                },
+                "Random Forest": {
+                    'n_estimators': [8,16,32,64,128,256],
+                    # 'criterion': ['squared_error','friedman_mse','absolute_error','poisson'],
+                    # 'max_features': ['sqrt','log2'],
+                    # 'max_depth': [None, 5, 10, 20],
+                    # 'min_samples_split': [2, 5, 10],
+                    # 'min_samples_leaf': [1, 2, 5],
+                    # 'bootstrap': [True, False],
+                },
+                "Gradient Boosting": {
+                    'learning_rate': [.1,.01,.05,.001],
+                    'subsample': [0.6,0.7,0.75,0.8,0.85,0.9],
+                    'n_estimators': [8,16,32,64,128,256],
+                    # 'criterion': ['squared_error','friedman_mse'],
+                    'max_depth': [3, 5, 10],
+                    'min_samples_split': [2, 5],
+                    'min_samples_leaf': [1, 2],
+                },
+                "Linear Regression": {
+                    # 'fit_intercept': [True, False],
+                    # 'copy_X': [True, False],
+                    # 'positive': [True, False],
+                },
+                "K-Neighbors Classifier": {
+                    'n_neighbors': [5, 7,9, 11],
+                    # 'weights': ['uniform','distance'],
+                    # 'algorithm': ['auto','ball_tree','kd_tree','brute'],
+                    # 'leaf_size': [20, 30, 40],
+                    # 'p': [1, 2],
+                },
+                "XGBClassifier": {
+                    'learning_rate': [.1,.01,.05,.001],
+                    'n_estimators': [8,16,32,64,128,256],
+                    # 'max_depth': [3, 5, 7],
+                    # 'subsample': [0.8, 1.0],
+                    # 'colsample_bytree': [0.8, 1.0],
+                    # 'gamma': [0, 1, 5],
+                    # 'reg_alpha': [0, 0.1, 1],
+                    # 'reg_lambda': [1, 1.5, 2],
+                },
+                "CatBoosting Classifier": {
+                    'depth': [6, 8, 10],
+                    'learning_rate': [0.01, 0.05, 0.1],
+                    'iterations': [30,50,100],
+                    # 'l2_leaf_reg': [1, 3, 5],
+                    # 'border_count': [32, 64, 128],
+                    # 'grow_policy': ['SymmetricTree','Depthwise','Lossguide'],
+                },
+                "AdaBoost Classifier": {
+                    'learning_rate': [.1,.01,0.5,.001],
+                    'n_estimators': [8,16,32,64,128,256],
+                    # 'loss': ['linear','square','exponential'],
+                }
+}
+
+            
+            model_report:dict=evaluate_models(x_train=x_train,y_train=y_train,x_test=x_test,y_test=y_test,models=models,param=params)
             
             ## to get best model score from dict
             best_model_score = max(sorted(model_report.values()))
